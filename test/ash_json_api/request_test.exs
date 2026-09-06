@@ -69,6 +69,14 @@ defmodule AshJsonApi.RequestTest do
   end
 
   test "can make a request with renamed path parameter" do
-    assert [] = get(Domain, "/posts/#{Ash.UUID.generate()}", status: 200, router: Router)
+    refute %{
+             "errors" => [
+               %{
+                 "code" => "no_such_input",
+                 "meta" => %{"input" => "post_id"},
+                 "status" => "422"
+               }
+             ]
+           } = get(Domain, "/posts/#{Ash.UUID.generate()}", status: 200, router: Router)
   end
 end
